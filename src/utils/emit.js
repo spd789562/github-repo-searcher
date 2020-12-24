@@ -8,7 +8,6 @@ export const emit = (type, payload = {}) => ({
 export const apiEmit = (type, payload = {}) => ({
   type: API_EMIT,
   apiType: type,
-  payload,
 })
 
 export default emit
