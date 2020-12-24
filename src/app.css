@@ -4,3 +4,9 @@
   margin-right: auto;
   margin-left: auto;
 }
+
+.app-search {
+  padding: 1rem 0.75rem;
+
+  border-bottom: 1px solid #999;
+}
