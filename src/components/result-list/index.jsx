@@ -18,7 +18,7 @@ const ResultList = () => {
       itemCount={dataLength}
       width="100%"
       height={height}
-      itemSize={110}
+      itemSize={105}
     >
       {ResultItem}
     </FixedSizeList>

@@ -9,6 +9,7 @@ import { faCodeBranch } from '@fortawesome/free-solid-svg-icons'
 import RepoTitle from './repo-title'
 import RepoDesc from './repo-desc'
 import RepoStar from './repo-star'
+import RepoLang from './repo-lang'
 
 import './result-item.css'
 
@@ -29,6 +30,7 @@ const ResultItem = ({ index, style }) => {
         )}
         <div className="repo-meta">
           <RepoStar>{data.stargazers_count}</RepoStar>
+          <RepoLang>{data.language}</RepoLang>
         </div>
       </div>
     </div>

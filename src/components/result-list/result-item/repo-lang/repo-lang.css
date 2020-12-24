@@ -1,0 +1,21 @@
+.repo-lang {
+  display: inline-flex;
+  align-items: center;
+
+  margin-left: 1rem;
+
+  color: #686868;
+}
+
+.repo-lang-color {
+  width: 0.875rem;
+  height: 0.875rem;
+
+  border-radius: 50%;
+}
+
+.repo-lang-text {
+  margin-left: 0.5rem;
+
+  font-size: 12px;
+}
