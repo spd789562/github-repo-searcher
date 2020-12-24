@@ -5,10 +5,27 @@ import {
   API_GET_REPO_NEXT,
   API_GET_LIMIT,
 } from './actions'
+import { APPEND_REPO_LIST } from '@store/repo'
+
+/* utils */
+import { emit, apiEmit } from '@utils/emit'
 
 const apiMaps = (getState, dispatch) => ({
-  [API_GET_REPO]: (payload) => {
-    console.log(payload)
+  [API_GET_REPO]: ({
+    data: { items = [], total_count = 0 },
+    err,
+    reqData: { page = 1 },
+  }) => {
+    if (!err) {
+      dispatch(
+        emit(APPEND_REPO_LIST, {
+          data: items,
+          total: total_count,
+          page,
+        })
+      )
+    } else {
+    }
   },
   [API_GET_REPO_NEXT]: (payload) => {},
   [API_GET_LIMIT]: (payload) => {},

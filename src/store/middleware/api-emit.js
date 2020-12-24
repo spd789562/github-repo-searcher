@@ -14,7 +14,7 @@ const apiMapping = {
 const apiEmitMiddleware = (getState, dispatch) => ({
   type,
   apiType,
-  payload,
+  payload = {},
 }) => {
   const useApi = apiMapping[apiType]
   if (type === API_EMIT && useApi) {
