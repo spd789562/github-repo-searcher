@@ -1,0 +1,16 @@
+.repo-star {
+  display: inline-flex;
+  align-items: center;
+
+  color: #686868;
+}
+
+.repo-star:hover {
+  color: #0366d6;
+}
+
+.repo-star-count {
+  margin-left: 0.5rem;
+
+  font-size: 12px;
+}

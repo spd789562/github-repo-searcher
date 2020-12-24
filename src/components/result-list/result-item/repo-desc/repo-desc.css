@@ -1,0 +1,21 @@
+.repo-desc {
+  display: block;
+  overflow: hidden;
+
+  margin-top: 0.5rem;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  font-size: 0.9125rem;
+}
+
+.repo-desc__placeholder {
+  width: 90%;
+  height: 0.9125rem;
+
+  animation: placeholder-animation 2.5s linear infinite;
+
+  border-radius: 5px;
+  background-size: 200% 100%;
+}

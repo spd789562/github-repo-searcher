@@ -1,0 +1,27 @@
+.repo-title {
+  display: block;
+  overflow: hidden;
+
+  margin-top: 0;
+  margin-bottom: 0;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  font-size: 1.125rem;
+}
+
+.repo-title > a {
+  text-decoration: none;
+
+  color: #0366d6;
+}
+
+.repo-title__placeholder {
+  height: 1.4rem;
+
+  animation: placeholder-animation 2.5s linear infinite;
+
+  border-radius: 5px;
+  background-size: 200% 100%;
+}
