@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@babel/core": "7.12.3",
+    "@babel/plugin-syntax-jsx": "^7.12.1",
     "@octokit/rest": "^18.0.12",
     "@pmmmwh/react-refresh-webpack-plugin": "0.4.2",
     "@svgr/webpack": "5.4.0",
