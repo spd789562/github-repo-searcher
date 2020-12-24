@@ -8,8 +8,8 @@
       "@utils/*": ["./src/utils/*"],
       "@components/*": ["./src/components/*"],
       "@store": ["./src/store/index"],
-      "@store/*": ["./src/store/*"],
+      "@store/*": ["./src/store/*"]
     }
   },
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules"]
 }
