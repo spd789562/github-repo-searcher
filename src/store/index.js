@@ -19,15 +19,15 @@ const [combinedReducers, initialState] = combineReducer({
 export const Provider = ({ children }) => {
   const stateRef = useRef(initialState)
   const getState = useCallback(() => stateRef.current, [])
-  const reducerData = useReducer(
+  const [state, reducerDispatch] = useReducer(
     (state, action) => (stateRef.current = combinedReducers(state, action)),
     initialState
   )
-  const [dispatch] = applyMiddleware([...reducerData, getState])
+  const [dispatch] = applyMiddleware([reducerDispatch, getState])
   return (
     <GlobalStore.Provider
       value={{
-        ...reducerData.state,
+        ...state,
         dispatch,
       }}
     >
