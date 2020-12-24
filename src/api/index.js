@@ -7,10 +7,12 @@ export const APIGetRepository = ({
   page = 1,
   per_page = 20,
 } = {}) =>
-  octokit.search.repos({
-    q: encodeURIComponent(query),
-    page,
-    per_page,
-  })
+  query
+    ? octokit.search.repos({
+        q: encodeURIComponent(query),
+        page,
+        per_page,
+      })
+    : new Promise((resolve) => resolve)
 
 export const APIGetRateLimit = () => octokit.rateLimit.get()
