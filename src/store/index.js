@@ -6,6 +6,7 @@ import { combineReducer } from './_helper'
 import applyMiddleware from './middleware'
 import repoReducer from './repo'
 import limitReducer from './limit'
+import loadingStatusReducer from './loading-status'
 
 import { prop, path, pipe } from 'ramda'
 
@@ -14,6 +15,7 @@ const GlobalStore = createContext({})
 const [combinedReducers, initialState] = combineReducer({
   repo: repoReducer,
   limit: limitReducer,
+  'loading-status': loadingStatusReducer,
 })
 
 export const Provider = ({ children }) => {
