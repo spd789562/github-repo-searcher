@@ -14,14 +14,15 @@ const apiMaps = (getState, dispatch) => ({
   [API_GET_REPO]: ({
     data: { items = [], total_count = 0 },
     err,
-    reqData: { page = 1 },
+    reqData: { query = '', page = 1 },
   }) => {
-    if (!err) {
+    if (!err && query === getState().repo.query) {
       dispatch(
         emit(APPEND_REPO_LIST, {
           data: items,
           total: total_count,
           page,
+          query,
         })
       )
     } else {

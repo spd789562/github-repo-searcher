@@ -3,7 +3,7 @@ import React, { useCallback } from 'react'
 /* store */
 import { useDispatch } from '@store'
 import { API_GET_REPO } from '@store/middleware/actions'
-import { CLEAR_REPO_LIST } from '@store/repo'
+import { UPDATE_REPO_SEARCH_QUERY, CLEAR_REPO_LIST } from '@store/repo'
 
 /* components */
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -20,6 +20,7 @@ const Search = () => {
   const handleSearch = useCallback(
     debounce(300, ({ target: { value } }) => {
       dispatch(emit(CLEAR_REPO_LIST))
+      dispatch(emit(UPDATE_REPO_SEARCH_QUERY, value))
       dispatch(apiEmit(API_GET_REPO, { query: value }))
     }),
     []
