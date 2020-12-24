@@ -11,12 +11,16 @@ import RepoDesc from './repo-desc'
 import RepoStar from './repo-star'
 import RepoLang from './repo-lang'
 
+/* hooks */
+import { useInfiniteLoad } from './handler'
+
 import './result-item.css'
 
-const ResultItem = ({ index, style }) => {
+const ResultItem = ({ index, style, isLast }) => {
   const [data] = useStore(`repo.data.${index}`)
+  const { itemRef } = useInfiniteLoad(isLast)
   return (
-    <div style={style} className="result-item">
+    <div style={style} className="result-item" ref={itemRef}>
       <FontAwesomeIcon
         icon={faCodeBranch}
         style={{ color: '#6a737d', marginTop: 4 }}
