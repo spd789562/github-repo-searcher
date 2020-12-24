@@ -1,10 +1,6 @@
-import { useReducer, useMemo } from 'react'
+import { useReducer, useRef, useCallback } from 'react'
 
-import {
-  createContext,
-  useContext,
-  useContextSelector,
-} from 'use-context-selector'
+import { createContext, useContextSelector } from 'use-context-selector'
 
 import { combineReducer } from './_helper'
 import applyMiddleware from './middleware'
@@ -21,12 +17,17 @@ const [combinedReducers, initialState] = combineReducer({
 })
 
 export const Provider = ({ children }) => {
-  const reducerData = useReducer(combinedReducers, initialState)
-  const [state, dispatch] = applyMiddleware(reducerData)
+  const stateRef = useRef(initialState)
+  const getState = useCallback(() => stateRef.current, [])
+  const reducerData = useReducer(
+    (state, action) => (stateRef.current = combinedReducers(state, action)),
+    initialState
+  )
+  const [dispatch] = applyMiddleware([...reducerData, getState])
   return (
     <GlobalStore.Provider
       value={{
-        ...state,
+        ...reducerData.state,
         dispatch,
       }}
     >
