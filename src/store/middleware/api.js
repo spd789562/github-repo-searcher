@@ -1,10 +1,5 @@
 /* actions */
-import {
-  API_EMIT,
-  API_GET_REPO,
-  API_GET_REPO_NEXT,
-  API_GET_LIMIT,
-} from './actions'
+import { API_GET_REPO, API_GET_REPO_NEXT, API_GET_LIMIT } from './actions'
 import { APPEND_REPO_LIST } from '@store/repo'
 import { CHANGE_LOADING_STATUS } from '@store/loading-status'
 
@@ -34,6 +29,7 @@ const apiMaps = (getState, dispatch) => ({
         dispatch(emit(CHANGE_LOADING_STATUS, 'init'))
       }
     } else {
+      dispatch(emit(CHANGE_LOADING_STATUS, 'error'))
     }
   },
   [API_GET_REPO_NEXT]: () => {
@@ -44,6 +40,7 @@ const apiMaps = (getState, dispatch) => ({
     const status = getState()['loading-status']
     const pageCount = Math.floor(total / PAGE_COUNT) + 1
     if (status !== 'end' && status !== 'loading' && page + 1 <= pageCount) {
+      dispatch(emit(CHANGE_LOADING_STATUS, 'loading'))
       dispatch(
         apiEmit(API_GET_REPO, {
           query,

@@ -22,6 +22,8 @@ const Search = () => {
     debounce(300, ({ target: { value } }) => {
       if(value) {
         dispatch(emit(CHANGE_LOADING_STATUS, 'loading'))
+      } else {
+        dispatch(emit(CHANGE_LOADING_STATUS, 'init'))
       }
       dispatch(emit(CLEAR_REPO_LIST))
       dispatch(emit(UPDATE_REPO_SEARCH_QUERY, value))
