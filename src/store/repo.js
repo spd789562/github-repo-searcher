@@ -24,7 +24,7 @@ const reducer = reducerCreator(initialState, {
     },
     data: concat(originRepo, data),
   }),
-  [CLEAR_REPO_LIST]: (state) => assoc([], 'data', state),
+  [CLEAR_REPO_LIST]: () => initialState,
 })
 
 export default {
