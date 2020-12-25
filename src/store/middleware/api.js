@@ -29,7 +29,11 @@ const apiMaps = (getState, dispatch) => ({
         dispatch(emit(CHANGE_LOADING_STATUS, 'init'))
       }
     } else {
-      dispatch(emit(CHANGE_LOADING_STATUS, 'error'))
+      if (err.toString().includes('API rate limit exceeded')) {
+        dispatch(emit(CHANGE_LOADING_STATUS, 'error_limit'))
+      } else {
+        dispatch(emit(CHANGE_LOADING_STATUS, 'error_unknow'))
+      }
     }
   },
   [API_GET_REPO_NEXT]: () => {
