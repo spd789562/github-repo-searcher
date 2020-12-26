@@ -31,7 +31,11 @@ const apiMaps = (getState, dispatch) => ({
         })
       )
       if (page === Math.floor(total_count / PAGE_COUNT) + 1) {
-        dispatch(emit(CHANGE_LOADING_STATUS, 'end'))
+        if (!items.length && page === 1) {
+          dispatch(emit(CHANGE_LOADING_STATUS, 'empty'))
+        } else {
+          dispatch(emit(CHANGE_LOADING_STATUS, 'end'))
+        }
       } else {
         dispatch(emit(CHANGE_LOADING_STATUS, 'init'))
       }
