@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 
 /* store */
 import { useDispatch } from '@store'
+import { API_GET_REPO_RETRY } from '@store/middleware/actions'
 
 /* utils */
 import { emit } from '@utils/emit'
@@ -37,7 +38,7 @@ export const useReciprocal = (unlockTime) => {
 export const useRefresh = () => {
   const dispatch = useDispatch()
   const handleRefresh = useCallback(() => {
-    dispatch(emit(''))
+    dispatch(emit(API_GET_REPO_RETRY))
   }, [])
   return handleRefresh
 }
