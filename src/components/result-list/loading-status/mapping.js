@@ -19,6 +19,6 @@ export const IconMapping = {
   loading: <FontAwesomeIcon icon={faSpinner} spin />,
   empty: <FontAwesomeIcon icon={faTimes} />,
   error_limit: <FontAwesomeIcon icon={faExclamationTriangle} />,
-  error_unknow: <FontAwesomeIcon icon={faHandPaper} />,
-  end: <FontAwesomeIcon icon={faTimes} />,
+  error_unknow: <FontAwesomeIcon icon={faTimes} />,
+  end: <FontAwesomeIcon icon={faHandPaper} />,
 }
