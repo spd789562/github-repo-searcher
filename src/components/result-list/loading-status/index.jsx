@@ -3,6 +3,9 @@ import React from 'react'
 /* store */
 import { useStore } from '@store'
 
+/* components */
+import RetryButton from './retry-buton'
+
 /* mapping */
 import { TextMapping, IconMapping } from './mapping'
 
@@ -14,6 +17,7 @@ const LoadingStatus = ({ style }) => {
     <div style={style} className="loading-status">
       {IconMapping[status]}
       <div className="loading-status-text">{TextMapping[status]}</div>
+      {status === 'error_limit' && <RetryButton />}
     </div>
   )
 }

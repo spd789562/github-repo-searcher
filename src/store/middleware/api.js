@@ -1,6 +1,7 @@
 /* actions */
 import { API_GET_REPO, API_GET_REPO_NEXT, API_GET_LIMIT } from './actions'
 import { APPEND_REPO_LIST } from '@store/repo'
+import { UPDATE_LIMIT_TIME } from '@store/limit'
 import { CHANGE_LOADING_STATUS } from '@store/loading-status'
 
 /* utils */
@@ -14,7 +15,8 @@ const apiMaps = (getState, dispatch) => ({
     err,
     reqData: { query = '', page = 1 },
   }) => {
-    if (!err && query === getState().repo.query) {
+    if (!err) {
+      if (query !== getState().repo.query) return
       dispatch(
         emit(APPEND_REPO_LIST, {
           data: items,
@@ -30,7 +32,9 @@ const apiMaps = (getState, dispatch) => ({
       }
     } else {
       if (err.toString().includes('API rate limit exceeded')) {
+        dispatch(emit(UPDATE_LIMIT_TIME, Infinity))
         dispatch(emit(CHANGE_LOADING_STATUS, 'error_limit'))
+        dispatch(apiEmit(API_GET_LIMIT))
       } else {
         dispatch(emit(CHANGE_LOADING_STATUS, 'error_unknow'))
       }
@@ -53,7 +57,11 @@ const apiMaps = (getState, dispatch) => ({
       )
     }
   },
-  [API_GET_LIMIT]: (payload) => {},
+  [API_GET_LIMIT]: ({ data, err }) => {
+    if (!err) {
+      dispatch(emit(UPDATE_LIMIT_TIME, data.resources.search.reset))
+    }
+  },
 })
 
 export const apiMiddleware = (getState, dispatch) => ({ type, payload }) => {
