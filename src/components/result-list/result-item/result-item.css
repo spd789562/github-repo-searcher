@@ -5,6 +5,10 @@
 
   border-bottom: 1px solid #ccc;
 }
+.result-item:hover {
+  background-color: #fafafa;
+}
+
 .result-item-content {
   overflow: hidden;
   flex: 1;

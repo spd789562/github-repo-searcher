@@ -17,7 +17,7 @@ export const APIGetRepository = ({
   query
     ? octokit.search
         .repos({
-          q: encodeURIComponent(query),
+          q: query.replace(/ /g, '+'),
           page,
           per_page,
         })

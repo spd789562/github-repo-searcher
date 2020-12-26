@@ -1,6 +1,12 @@
 /* actions */
-import { API_GET_REPO, API_GET_REPO_NEXT, API_GET_LIMIT } from './actions'
-import { APPEND_REPO_LIST } from '@store/repo'
+import {
+  API_GET_REPO,
+  API_GET_REPO_NEXT,
+  API_GET_LIMIT,
+  API_GET_REPO_RETRY,
+} from './actions'
+import { APPEND_REPO_LIST, UPDATE_REPO_PAGE } from '@store/repo'
+import { UPDATE_LIMIT_TIME } from '@store/limit'
 import { CHANGE_LOADING_STATUS } from '@store/loading-status'
 
 /* utils */
@@ -14,7 +20,8 @@ const apiMaps = (getState, dispatch) => ({
     err,
     reqData: { query = '', page = 1 },
   }) => {
-    if (!err && query === getState().repo.query) {
+    if (!err) {
+      if (query !== getState().repo.query) return
       dispatch(
         emit(APPEND_REPO_LIST, {
           data: items,
@@ -24,16 +31,28 @@ const apiMaps = (getState, dispatch) => ({
         })
       )
       if (page === Math.floor(total_count / PAGE_COUNT) + 1) {
-        dispatch(emit(CHANGE_LOADING_STATUS, 'end'))
+        if (!items.length && page === 1) {
+          dispatch(emit(CHANGE_LOADING_STATUS, 'empty'))
+        } else {
+          dispatch(emit(CHANGE_LOADING_STATUS, 'end'))
+        }
       } else {
         dispatch(emit(CHANGE_LOADING_STATUS, 'init'))
       }
     } else {
       if (err.toString().includes('API rate limit exceeded')) {
+        dispatch(emit(UPDATE_LIMIT_TIME, Infinity))
         dispatch(emit(CHANGE_LOADING_STATUS, 'error_limit'))
+        dispatch(emit(UPDATE_REPO_PAGE, page))
+        dispatch(apiEmit(API_GET_LIMIT))
       } else {
         dispatch(emit(CHANGE_LOADING_STATUS, 'error_unknow'))
       }
+    }
+  },
+  [API_GET_LIMIT]: ({ data, err }) => {
+    if (!err) {
+      dispatch(emit(UPDATE_LIMIT_TIME, data.resources.search.reset))
     }
   },
   [API_GET_REPO_NEXT]: () => {
@@ -53,7 +72,14 @@ const apiMaps = (getState, dispatch) => ({
       )
     }
   },
-  [API_GET_LIMIT]: (payload) => {},
+  [API_GET_REPO_RETRY]: () => {
+    const {
+      query,
+      pagination: { page = 1 },
+    } = getState().repo
+    dispatch(emit(CHANGE_LOADING_STATUS, 'loading'))
+    dispatch(apiEmit(API_GET_REPO, { query, page }))
+  },
 })
 
 export const apiMiddleware = (getState, dispatch) => ({ type, payload }) => {

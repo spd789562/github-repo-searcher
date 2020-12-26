@@ -11,8 +11,8 @@ const initialState = {
 }
 
 const reducer = reducerCreator(initialState, {
-  [UPDATE_LIMIT_TIME]: (state, time) => assoc(state, 'time', time),
-  [UPDATE_LIMIT_COUNT]: (state, count) => assoc(state, 'count', count),
+  [UPDATE_LIMIT_TIME]: (state, time) => assoc('time', time, state),
+  [UPDATE_LIMIT_COUNT]: (state, count) => assoc('count', count, state),
 })
 
 export default {

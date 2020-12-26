@@ -33,7 +33,7 @@ const Search = () => {
   )
   return (
     <label className="search">
-      <input className="search-input" type="text" onChange={handleSearch} />
+      <input className="search-input" type="text" onChange={handleSearch} placeholder="搜尋點什麼" />
       <FontAwesomeIcon icon={faSearch} style={{ color: '#666' }} />
     </label>
   )

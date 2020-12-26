@@ -1,0 +1,8 @@
+.retry-button {
+  display: inline-block;
+  margin-left: 1rem;
+  cursor: pointer;
+}
+.retry-button:hover {
+  color: #0366d6;
+}
