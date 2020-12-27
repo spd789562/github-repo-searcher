@@ -20,8 +20,8 @@ const apiMaps = (getState, dispatch) => ({
     err,
     reqData: { query = '', page = 1 },
   }) => {
+    if (query !== getState().repo.query) return
     if (!err) {
-      if (query !== getState().repo.query) return
       dispatch(
         emit(APPEND_REPO_LIST, {
           data: items,
