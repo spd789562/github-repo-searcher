@@ -1,70 +1,45 @@
-# Getting Started with Create React App
+# Github Repository Searcher
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Start project
 
-In the project directory, you can run:
+```
+yarn start
+```
 
-### `yarn start`
+## 專案架構
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### `src/api`
+集中 Github API
+### `src/store`
+React Context API Redux
+### `src/utils`
+輔助函數
+### `src/components`
+各式元件
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## 技術細節
+### 使用 `use-context-selector` 替代 React Context API
+避免多個 reducer 造成的渲染問題
+### 使用 Context 建立 Redux
+避免使用 props 傳遞所造成的渲染
+### 使用 `throttle-debounce` 
+使用 debounce 避免搜尋太過頻繁
+### 使用 `react-window`
+建立 virtual list 增加捲動效能
 
-### `yarn test`
+### 使用 `IntersectionObserver`
+替代 onScroll，更方便的監聽是否到達指定位置
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 流程說明
 
-### `yarn build`
+### Github API 流程
+使用 Context API 建立 Redux 系統，並透過 `src/store/middleware/api-emit.js` 將 github API 收到的 response 處理後，再送往 `src/store/middleware/api.js` 存入 Redux Store。
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### UI 流程
+搜尋元件(`src/components/search`)搜尋後，變更 `loading-status` 並送出查詢(`API_GET_REPO`)，根據收到的結果變更 `loading-status`，若收到回應時的查詢字與當前存至 store 中的 query 不相符合，代表為前次的搜尋，不做任何事。
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+於 Repo 列表最後一個加上 `IntersectionObserver`，並於元件進入畫面時送出下一頁查詢(`API_GET_REPO_NEXT`)，並獲取 store 中的 query 及 page 後送出查詢(`API_GET_REPO`)。
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+若查詢 API 錯誤中包涵 `API rate limit exceeded` 則代表達到 API 呼叫上限，將會獲取當前 Rate Limit(`API_GET_LIMIT`)，並取得下次可搜尋時間，若觸發呼叫上限並取得下次可搜尋時間，重試元件(`src/components/result-list/loading-status/retry-buton`)將會開始倒數，並於倒數結束時送出重試查詢(`API_GET_REPO_RETRY`)，並獲取 store 中的 query 及 page 後送出查詢(`API_GET_REPO`)。
