@@ -11,6 +11,7 @@ import { CHANGE_LOADING_STATUS } from '@store/loading-status'
 
 /* utils */
 import { emit, apiEmit } from '@utils/emit'
+import { includes } from 'ramda'
 
 const PAGE_COUNT = 20
 
@@ -62,7 +63,10 @@ const apiMaps = (getState, dispatch) => ({
     } = getState().repo
     const status = getState()['loading-status']
     const pageCount = Math.floor(total / PAGE_COUNT) + 1
-    if (status !== 'end' && status !== 'loading' && page + 1 <= pageCount) {
+    if (
+      includes(status, ['init', 'error_limit_pending']) &&
+      page + 1 <= pageCount
+    ) {
       dispatch(emit(CHANGE_LOADING_STATUS, 'loading'))
       dispatch(
         apiEmit(API_GET_REPO, {

@@ -17,7 +17,7 @@ const LoadingStatus = ({ style }) => {
     <div style={style} className="loading-status">
       {IconMapping[status]}
       <div className="loading-status-text">{TextMapping[status]}</div>
-      {status === 'error_limit' && <RetryButton />}
+      {status.includes('error_limit') && <RetryButton />}
     </div>
   )
 }
